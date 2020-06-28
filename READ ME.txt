@@ -1,0 +1,4 @@
+How to use:
+Clcik the .bat file and will be prompted to give relvant information.
+When all information is inputted a QR code and a website will be created. You can go to that website to recieve notification.
+Otherwise the script will just keep runnig and eventually if a spot opens up send you an email as well as pop a local notification on you computer.
