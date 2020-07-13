@@ -13,7 +13,6 @@ import smtplib
 from configparser import ConfigParser 
 from dotenv import load_dotenv
 import os
-import winsound
 from fbchat import Client
 import fbchat
 
