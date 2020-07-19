@@ -1,20 +1,21 @@
 <html>
     <head>
         {% if title %}
-        <title>{{ title }} - microblog</title>
+        <title>{{ title }} - Course helper</title>
         {% else %}
-        <title>microblog</title>
+        <title>Course helper</title>
         {% endif %}
     </head>
     <body>
         <div>
-            Microblog:
+            UBC-Course registeration helper:
             <a href="{{ url_for('index') }}">Home</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
             {% else %}
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
+            <a href="{{ url_for('help') }}">Help</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
