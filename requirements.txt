@@ -33,6 +33,7 @@ mccabe==0.6.1
 multidict==4.7.6
 notify-run==0.0.13
 paho-mqtt==1.5.0
+psycopg2-binary==2.8.5
 pylint==2.5.3
 PyQRCode==1.2.1
 python-dateutil==2.8.1
