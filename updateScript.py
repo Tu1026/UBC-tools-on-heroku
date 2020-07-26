@@ -124,7 +124,9 @@ def update_loop(soup, registered, course, noti_email):
                 # send_fb_message("register for " + course + "NOWWWWWWW")
                 # send_discord_message(course)
                 username = os.environ.get('username1')
+                print(username)
                 password = os.environ.get('password')
+                print(password)
                 send_email(username, password, course, noti_email)
                 print("email notificaiton sent")
             except:
