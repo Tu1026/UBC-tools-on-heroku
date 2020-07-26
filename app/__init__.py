@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-q = Queue('course-update', (connection=conn))
+q = Queue('course-update', connection=conn)
 
 
 from app import routes, models
