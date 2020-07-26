@@ -1,4 +1,5 @@
 """Monitors the given course and send update when a spot frees up
+
     Usage: change the url to the course, chagne the word looking for to however, many people is registered in the class
     , subscribe to the printed website to recieve notification
 """
@@ -13,31 +14,64 @@ import smtplib
 from configparser import ConfigParser 
 from dotenv import load_dotenv
 import os
+import winsound
 from fbchat import Client
 import fbchat
+import discord
+import datetime
+import gc
 
 
-load_dotenv()
-# use https://findmyfbid.in/#:~:text=Find%20your%20facebook%20ID%20in%20two%20easy%20steps&text=Your%20Facebook%20personal%20profile%20URL,profile.php%3Fid%3D100001533612613
-# to find uid
-def send_fb_message(word: str, uid: str):
-    """print the given string one word at a time to fb friend
-        Args: 
-            a string that contain multiple words, the uid of the fb friend
-            user input: username and password
-    """
-    uid = os.getenv("uid")
-    username_fb = os.getenv("username2") 
-    passwrod_fb = os.getenv("password1")
-    username = str(input("Username: ")) 
-    client = fbchat.Client(username_fb, passwrod_fb)
-    client.send(fbchat.models.Message(word), uid)
-    client.logout()
 
+# def send_fb_message(words: str, uid: str):
+#     """print the given string one word at a time to fb friend
+#         Args: 
+#             a string that contain multiple words, the uid of the fb friend
+#             user input: username and password
+#     """
+#     username = str(input("Username: ")) 
+#     client = fbchat.Client(username, getpass()) 
+#     for word in words:
+#         client.send(fbchat.models.Message(word),
+#                 uid)
+#         time.sleep(1)
+#     client.logout()
+
+## Personalized for myself
+# def send_fb_message(word: str):
+#     """print the given string one word at a time to fb friend
+#         Args: 
+#             a string that contain multiple words, the uid of the fb friend
+#             user input: username and password
+#     """
+#     uid = os.getenv("uid")
+#     username_fb = os.getenv("username2") 
+#     passwrod_fb = os.getenv("password1")
+#     client = fbchat.Client(username_fb, passwrod_fb)
+#     client.send(fbchat.models.Message(word), uid)
+#     client.logout()
+
+def send_discord_message(word):
+    load_dotenv()
+    TOKEN = os.getenv('DISCORD_TOKEN')
+    print(TOKEN)
+    client = discord.Client()
+    print('discord dying')
+
+    @client.event
+    async def on_ready():
+        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.close()
+    
+    client.run(TOKEN)
 
 
 #Reference from https://stackabuse.com/how-to-send-emails-with-gmail-using-python/
-def send_email(username, password):
+def send_email(username, password, course, noti_email):
     """send email to the person who wishes to recieve notification
     """
     sent_from = username
@@ -52,50 +86,62 @@ def send_email(username, password):
     server.sendmail(sent_from, to, message)
     server.close()
 
-
-#get information from user
-course = input("what course are you looking for?")
-noti_email = input("what is your email that you want to get notificaition at?")
-url = input("What is the 'section' specific url that you want to get in" +
-"(ex: https://courses.students.ubc.ca/cs/courseschedule?pname=subjarea&tname=subj-section&dept=BIOL&course=234&section=921)?")
-registered = input("How many people are registered in this section so far(only enter number ex: 100)?")
-
-
-## Create notification channel
-notify = Notify()
-print(notify.register())
-print("go to this website if you want push notificaiton from browser")
-
-
+def update_loop(soup, registered, course, noti_email):
 ## Keeps looping through the website until a spot is open
-while True:
+    while True:
+        try: 
+            text = soup.get_text()
+            text_list = text.split()
+            word_looking_for = "Registered:" + str(registered)
+            t = datetime.datetime.today()
+            # if the amount of people registered has not changed keep looping
+        except:
+            time.sleep(10) 
+            update_loop(soup, registered, course, noti_email)
+        
+        if word_looking_for in text_list:
+            # wait 10 seconds,
+            print("No seats avaliable yet updating in 10 seconds")
+            time.sleep(10)
+            if t.hour >= 2 and t.hour <= 4:
+                time_sleep = datetime.timedelta(hours=2, minutes=20)
+                print(f'sleeping right now till 4.20 AM for{time_sleep.total_seconds()} seconds to avoid scheduled maintenence')
+                time.sleep(time_sleep.total_seconds())
+                t = datetime.datetime.today()
+                print(f'waking up at time {t}') 
+            # continue with the script,
+            del text, text_list, word_looking_for, t
+            gc.collect()
+            continue
+            
+        # if the amout of people registered has changed do a pop up and send a notificaiton on the website
+        else:
+            # notify.send("register for " + course + " NOW")
+            try:
+                # log into server account to send message
+                # config = ConfigParser()
+                # config.read('config.ini')
+                # username = config.get("email", "username")
+                # password = config.get("email", "password")
+                # send_fb_message("register for " + course + "NOWWWWWWW")
+                # send_discord_message(course)
+                username = os.getenv("username1")
+                password = os.getenv("password")
+                send_email(username, password, course, noti_email)
+                print("email notificaiton sent")
+            except:
+                print("something went wrong with emailing stuff or FB stuff")
+            break
+    
+def main_function(course, noti_email, url, registered):
+        
+    load_dotenv()
+    #get information from user
     html = urlopen(url).read()
     soup = BeautifulSoup(html, "html.parser")
-    text = soup.get_text()
-    text_list = text.split()
-    word_looking_for = "Registered:" + registered
-    # if the amount of people registered has not changed keep looping
-    if word_looking_for in text_list:
-        # wait 15 seconds,
-        print("No seats avaliable yet updating in 15 seconds")
-        time.sleep(15)
-        # continue with the script,
-        continue
-        
-    # if the amout of people registered has changed do a pop up and send a notificaiton on the website
-    else:
-        notify.send("register for " + course + " NOW")
-        try:
-            # log into server account to send message
-            config = ConfigParser()
-            config.read('config.ini')
-            username = os.getenv("username1")
-            password = os.getenv("password")
-            send_fb_message("register for " + course + "NOWWWWWWW")
-            send_email(username, password)
-            print("email notificaiton sent")
-        except:
-            print("something went wrong with emailing stuff or FB stuff")
-        ctypes.windll.user32.MessageBoxW(0, course, 'Spot is now open for', course)
-        winsound.MessageBeep()
-        break
+    update_loop(soup, registered, course, noti_email)
+
+    ## Create notification channel
+    # notify = Notify()
+    # print(notify.register())
+    # print("go to this website if you want push notificaiton from browser")
