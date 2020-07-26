@@ -1,2 +1,2 @@
 web: flask db upgrade; gunicorn server:app
-worker: python worker.py
+worker: rq worker -u $REDIS_URL course-update
