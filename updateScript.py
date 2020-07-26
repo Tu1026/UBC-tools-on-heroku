@@ -52,8 +52,7 @@ import gc
 
 def send_discord_message(word):
     load_dotenv()
-    TOKEN = os.getenv('DISCORD_TOKEN')
-    print(TOKEN)
+    TOKEN = os.environ.get('DISCORD_TOKEN')
     client = discord.Client()
     print('discord dying')
 
@@ -124,8 +123,8 @@ def update_loop(soup, registered, course, noti_email):
                 # password = config.get("email", "password")
                 # send_fb_message("register for " + course + "NOWWWWWWW")
                 # send_discord_message(course)
-                username = os.getenv("username1")
-                password = os.getenv("password")
+                username = os.environ.get('username1')
+                password = os.environ.get('password')
                 send_email(username, password, course, noti_email)
                 print("email notificaiton sent")
             except:

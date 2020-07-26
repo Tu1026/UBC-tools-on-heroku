@@ -8,7 +8,7 @@ from flask_login import login_required
 from flask import request
 from werkzeug.urls import url_parse
 from app.forms import RegistrationForm, CourseForm
-from app import db
+from app import db, q
 from updateScript import main_function
 import discord
 from dotenv import load_dotenv
@@ -68,7 +68,7 @@ def update():
     form = CourseForm()
     if form.validate_on_submit():
         course = Course(class_name=form.class_name.data, url=form.url.data, seats=form.seats.data, author=current_user)
-        main_function(form.class_name.data, current_user.email, form.url.data, int(form.seats.data))
+        q.enqueue(main_function, form.class_name.data, current_user.email, form.url.data, int(form.seats.data))
         flash('Congratulations course has been updated!')
         return redirect(url_for('index'))
     return render_template('update.html', title='update', form=form)
