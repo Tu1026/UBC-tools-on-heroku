@@ -67,7 +67,6 @@ def help():
 def update():
     form = CourseForm()
     if form.validate_on_submit():
-        course = Course(class_name=form.class_name.data, url=form.url.data, seats=form.seats.data, author=current_user)
         q.enqueue(main_function, form.class_name.data, current_user.email, form.url.data, int(form.seats.data))
         flash('Congratulations course has been updated!')
         return redirect(url_for('index'))
