@@ -71,6 +71,7 @@ def send_email(username, password, course, noti_email):
     message ='Subject: {}\n\n{}'.format(subject, body)
 
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    print('smtlib worked')
     server.ehlo()
     server.login(username, password)
     print('log in issues')
@@ -116,11 +117,12 @@ def update_loop(soup, registered, course, noti_email):
                 # username = config.get("email", "username")
                 # password = config.get("email", "password")
                 # send_fb_message("register for " + course + "NOWWWWWWW")
-                send_discord_message(course)
+                # send_discord_message(course)
                 username = os.environ.get('username1')
                 password = os.environ.get('password')
                 print(noti_email)
                 print(username)
+                print(password)
                 send_email(username, password, course, noti_email)
                 print("email notificaiton sent")
             except:
