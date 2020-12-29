@@ -75,7 +75,9 @@ def send_email(username, password, course, noti_email):
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.ehlo()
     server.login(username, password)
+    print('log in issues')
     server.sendmail(sent_from, to, message)
+    print('sending issues')
     server.close()
 
 def update_loop(soup, registered, course, noti_email):
