@@ -50,11 +50,12 @@ def send_discord_message(word):
 
     @client.event
     async def on_ready():
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+
         await client.close()
     
     client.run(TOKEN)
@@ -117,12 +118,9 @@ def update_loop(soup, registered, course, noti_email):
                 # username = config.get("email", "username")
                 # password = config.get("email", "password")
                 # send_fb_message("register for " + course + "NOWWWWWWW")
-                # send_discord_message(course)
+                send_discord_message(course)
                 username = os.environ.get('username1')
                 password = os.environ.get('password')
-                print(noti_email)
-                print(username)
-                print(password)
                 send_email(username, password, course, noti_email)
                 print("email notificaiton sent")
             except:
