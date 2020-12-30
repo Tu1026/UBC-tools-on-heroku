@@ -50,11 +50,16 @@ def send_discord_message(word):
 
     @client.event
     async def on_ready():
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
 
         await client.close()
     
