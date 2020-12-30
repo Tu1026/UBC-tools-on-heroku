@@ -50,25 +50,20 @@ def send_discord_message(word):
 
     @client.event
     async def on_ready():
-<<<<<<< HEAD
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-=======
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
->>>>>>> parent of 1d2337d... deployed on test discord server with email support
-        await client.close()
+        channel = client.get_channel(793419751400800259)
+        print(channel)
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+
+        # await client.close()
     
     client.run(TOKEN)
 
@@ -130,12 +125,7 @@ def update_loop(soup, registered, course, noti_email):
                 # username = config.get("email", "username")
                 # password = config.get("email", "password")
                 # send_fb_message("register for " + course + "NOWWWWWWW")
-<<<<<<< HEAD
                 send_discord_message(course)
-                print("discord went through")
-=======
-                # send_discord_message(course)
->>>>>>> parent of 1d2337d... deployed on test discord server with email support
                 username = os.environ.get('username1')
                 password = os.environ.get('password')
                 print(noti_email)
@@ -159,6 +149,3 @@ def main_function(course, noti_email, url, registered):
     # notify = Notify()
     # print(notify.register())
     # print("go to this website if you want push notificaiton from browser")
-
-
-main_function('SADAS', 's31302@gmail.com', 'https://stackoverflow.com/questions/63357075/discord-client-error-nonetype-object-has-no-attribute-send', 150)
