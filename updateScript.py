@@ -124,6 +124,7 @@ def update_loop(soup, registered, course, noti_email):
                 # password = config.get("email", "password")
                 # send_fb_message("register for " + course + "NOWWWWWWW")
                 send_discord_message(course)
+                print("discord went through")
                 username = os.environ.get('username1')
                 password = os.environ.get('password')
                 send_email(username, password, course, noti_email)
