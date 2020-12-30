@@ -50,16 +50,16 @@ def send_discord_message(word):
 
     @client.event
     async def on_ready():
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
         await client.close()
     
     client.run(TOKEN)
@@ -144,3 +144,6 @@ def main_function(course, noti_email, url, registered):
     # notify = Notify()
     # print(notify.register())
     # print("go to this website if you want push notificaiton from browser")
+
+
+main_function('SADAS', 's31302@gmail.com', 'https://stackoverflow.com/questions/63357075/discord-client-error-nonetype-object-has-no-attribute-send', 150)
