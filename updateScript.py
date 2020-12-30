@@ -50,18 +50,20 @@ def send_discord_message(word):
 
     @client.event
     async def on_ready():
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        # await client.get_channel(793419834725105695).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
-        await client.get_channel(736118897002151939).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        channel = client.get_channel(793419751400800259)
+        print(channel)
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        # await client.get_channel(736117723322646528).send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
+        await channel.send(f'Register for {word}RIGHT NOW!!!!!!!!!!!')
 
-        await client.close()
+        # await client.close()
     
     client.run(TOKEN)
 
@@ -124,9 +126,11 @@ def update_loop(soup, registered, course, noti_email):
                 # password = config.get("email", "password")
                 # send_fb_message("register for " + course + "NOWWWWWWW")
                 send_discord_message(course)
-                print("discord went through")
                 username = os.environ.get('username1')
                 password = os.environ.get('password')
+                print(noti_email)
+                print(username)
+                print(password)
                 send_email(username, password, course, noti_email)
                 print("email notificaiton sent")
             except:
