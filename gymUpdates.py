@@ -94,7 +94,6 @@ def update_loop(session, url, noti_email):
                 print("email notificaiton sent")
             except:
                 print("something went wrong with emailing stuff or FB stuff")
-            ctypes.windll.user32.MessageBoxW(0, session, 'Spot is now open for', session)
             break
 
 #get information from user

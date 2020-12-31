@@ -54,7 +54,6 @@ PyQRCode==1.2.1
 python-dateutil==2.8.1
 python-dotenv==0.13.0
 python-editor==1.0.4
-pywin32==228
 pyzmq==19.0.2
 redis==3.5.3
 requests==2.22.0
