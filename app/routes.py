@@ -7,9 +7,10 @@ from flask_login import logout_user
 from flask_login import login_required
 from flask import request
 from werkzeug.urls import url_parse
-from app.forms import RegistrationForm, CourseForm
+from app.forms import RegistrationForm, CourseForm, GymForm
 from app import db, q
 from updateScript import main_function
+from gymUpdates import update_loop
 import discord
 from dotenv import load_dotenv
 
@@ -68,7 +69,16 @@ def update():
     form = CourseForm()
     if form.validate_on_submit():
         q.enqueue(main_function, form.class_name.data, current_user.email, form.url.data, int(form.seats.data))
-        flash('Congratulations course has been updated!')
+        flash('Congratulations course has been tracked!')
         return redirect(url_for('index'))
     return render_template('update.html', title='update', form=form)
 
+@app.route('/gym', methods=['GET', 'POST'])
+@login_required
+def gym():
+    form = GymForm()
+    if form.validate_on_submit():
+        q.enqueue(update_loop, form.class_name.data, form.url.data, current_user.email)
+        flash('Congratulations gym has been tracked!')
+        return redirect(url_for('index'))
+    return render_template('gym.html', title='gym', form=form)

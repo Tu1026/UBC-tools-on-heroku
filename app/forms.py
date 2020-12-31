@@ -33,3 +33,8 @@ class CourseForm(FlaskForm):
     url = StringField('section url', validators=[DataRequired()])
     seats = StringField('seats', validators=[DataRequired()])
     submit = SubmitField('Start Updating')
+
+class GymForm(FlaskForm):
+    class_name = StringField('gym time (however you put it is fine)', validators=[DataRequired()])
+    url = StringField('section url', validators=[DataRequired()])
+    submit = SubmitField('Start Updating')

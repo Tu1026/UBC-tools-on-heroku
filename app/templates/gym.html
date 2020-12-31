@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Course</h1>
+    <h1>Gym</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -15,13 +15,6 @@
             {{ form.url.label }}<br>
             {{ form.url(size=64) }}<br>
             {% for error in form.url.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.seats.label }}<br>
-            {{ form.seats(size=32) }}<br>
-            {% for error in form.seats.errors %}
             <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </p>
