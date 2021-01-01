@@ -32,9 +32,14 @@ class CourseForm(FlaskForm):
     class_name = StringField('course name', validators=[DataRequired()])
     url = StringField('section url', validators=[DataRequired()])
     seats = StringField('seats', validators=[DataRequired()])
-    submit = SubmitField('Start Updating')
+    submit = SubmitField('Start Tracking')
 
 class GymForm(FlaskForm):
     class_name = StringField('gym time (however you put it is fine)', validators=[DataRequired()])
     url = StringField('section url', validators=[DataRequired()])
-    submit = SubmitField('Start Updating')
+    submit = SubmitField('Start Tracking')
+
+class ScraperForm(FlaskForm):
+    class_name = StringField('Access Token of your canvas (check help for more)', validators=[DataRequired()])
+    num = StringField('Course Id', validators=[DataRequired()])
+    submit = SubmitField('Start Scraping')

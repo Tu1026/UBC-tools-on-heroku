@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, send_file
 from app import app
 from app.forms import LoginForm
 from flask_login import current_user, login_user
@@ -7,13 +7,15 @@ from flask_login import logout_user
 from flask_login import login_required
 from flask import request
 from werkzeug.urls import url_parse
-from app.forms import RegistrationForm, CourseForm, GymForm
+from app.forms import RegistrationForm, CourseForm, GymForm, ScraperForm
 from app import db, q
 from updateScript import main_function
 from gymUpdates import update_loop
+from canvas_scraper import extraction
 import discord
 from dotenv import load_dotenv
-
+from pathlib import Path
+import shutil
 
 @app.route('/')
 @app.route('/index')
@@ -82,3 +84,16 @@ def gym():
         flash('Congratulations gym has been tracked!')
         return redirect(url_for('index'))
     return render_template('gym.html', title='gym', form=form)
+
+@app.route('/scraper', methods=['GET', 'POST'])
+@login_required
+def scraper():
+    form = ScraperForm()
+    if form.validate_on_submit():
+        extraction(form.class_name.data, form.num.data)
+        flash('Congratulations content downloading!')
+        dir_name = Path('/scraper')
+        shutil.make_archive('extraction', 'zip', dir_name)
+        send_file('/extraction.zip', as_attachment=True)
+        return redirect(url_for('index'))
+    return render_template('scraper.html', title='scraper', form=form)
