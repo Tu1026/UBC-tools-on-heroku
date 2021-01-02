@@ -98,8 +98,8 @@ def scraper():
     MYDIR = os.path.dirname(__file__)
     s3 = get_client()
     if scraper_form.validate_on_submit():
-        shutil.rmtree(Config.basedir + "/" + 'tmp')
-        os.mkdir(Config.basedir + "/" + 'tmp')
+        shutil.rmtree(os.path.join(Config.basedir,'tmp'))
+        os.mkdir(os.path.join(Config.basedir,'tmp'))
         extraction(scraper_form.class_name.data, scraper_form.num.data)
         shutil.make_archive('extraction', 'zip', 'tmp')
         upload_file(s3, 'extraction.zip')
