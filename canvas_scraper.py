@@ -8,7 +8,7 @@ from canvasapi.exceptions import Unauthorized, ResourceDoesNotExist
 from canvasapi.file import File
 from canvasapi.module import Module, ModuleItem
 from pathlib import Path
-
+from config import  Config
 
 def extract_files(text):
     text_search = re.findall("/files/(\\d+)", text, re.IGNORECASE)
@@ -17,10 +17,12 @@ def extract_files(text):
 
 
 def extraction(token, num):
+    MYDIR = os.path.dirname(__file__)
     url1 = "https://canvas.ubc.ca/"
     output1 = Path("scraper/")
     num_of_courses = 1
-    output = Path("app/scraper/")
+    # output = os.path.join(MYDIR + "/" + 'app/scraper')
+    output = os.path.join(Config.basedir + "/" + 'tmp')
     
     canvas = Canvas(url1, token)
     course = canvas.get_course(int(num))

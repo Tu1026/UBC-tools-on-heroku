@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, send_file
+from flask import render_template, flash, redirect, url_for, send_file, Response
 from app import app
 from app.forms import LoginForm
 from flask_login import current_user, login_user
@@ -17,6 +17,10 @@ from dotenv import load_dotenv
 from pathlib import Path
 import shutil
 import os
+from aws import upload_file, list_files, get_total_bytes, get_object
+import boto3
+from config import Config
+
 
 @app.route('/')
 @app.route('/index')
@@ -91,16 +95,37 @@ def gym():
 def scraper():
     scraper_form = ScraperForm()
     download_form = DownloadForm()
+    MYDIR = os.path.dirname(__file__)
+    s3 = get_client()
     if scraper_form.validate_on_submit():
-        shutil.rmtree(Path('app/scraper'))
-        os.mkdir('app/scraper')
+        shutil.rmtree(Config.basedir + "/" + 'tmp')
+        os.mkdir(Config.basedir + "/" + 'tmp')
         extraction(scraper_form.class_name.data, scraper_form.num.data)
+        shutil.make_archive('extraction', 'zip', 'tmp')
+        upload_file(s3, 'extraction.zip')
         flash('Downloading and preparing your files hit the download button 5 minutes later')
         # dir_name = Path('/scraper')
         return redirect(url_for('index'))
     if download_form.validate_on_submit():
+        total_bytes = get_total_bytes(s3)
         flash('Downloaded')
-        shutil.make_archive('extraction', 'zip', Path('/app'), 'scraper')
-        shutil.move('%s.%s'%('extraction', 'zip'), Path('app'))
-        return send_file('extraction.zip', as_attachment=True)
+        # shutil.make_archive('extraction', 'zip', Path('/app'), 'scraper')
+        # shutil.make_archive('extraction', 'zip', os.path.join(MYDIR + "/" + "/app"), 'scraper')
+        # shutil.move('%s.%s'%('extraction', 'zip'), os.path.join(MYDIR + "/" + "/app"))
+        return Response(
+        get_object(s3, total_bytes),
+        mimetype='text/plain',
+        headers={"Content-Disposition": "attachment;filename=extraction.zip"}
+    )
     return render_template('scraper.html', title='scraper', form1=scraper_form, form2=download_form)
+
+def get_client():
+    load_dotenv()
+    AWSUSER_SECRET = os.environ.get('AWSUSER_SECRET')
+    AWSUSER_ID = os.environ.get('AWSUSER_ID')
+    AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
+    return boto3.client('s3',
+                    'us-west-1',
+                    aws_access_key_id= AWSUSER_ID,
+                    aws_secret_access_key= AWSUSER_SECRET
+                     )
