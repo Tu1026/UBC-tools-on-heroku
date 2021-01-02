@@ -95,12 +95,11 @@ def gym():
 def scraper():
     scraper_form = ScraperForm()
     download_form = DownloadForm()
-    MYDIR = os.path.dirname(__file__)
     s3 = get_client()
     if scraper_form.validate_on_submit():
         shutil.rmtree(os.path.join(Config.basedir,'tmp'))
         os.mkdir(os.path.join(Config.basedir,'tmp'))
-        extraction(scraper_form.class_name.data, scraper_form.num.data)
+        q.enqueue(extraction, scraper_form.class_name.data, scraper_form.num.data)
         shutil.make_archive('extraction', 'zip', 'tmp')
         upload_file(s3, 'extraction.zip')
         flash('Downloading and preparing your files hit the download button 5 minutes later')
