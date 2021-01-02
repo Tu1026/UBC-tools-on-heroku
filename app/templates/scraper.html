@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Scraper</h1>
+    <form action="" method="post">
+        {{ form1.hidden_tag() }}
+        <p>
+            {{ form1.class_name.label }}<br>
+            {{ form1.class_name(size=128) }}<br>
+            {% for error in form1.class_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form1.num.label }}<br>
+            {{ form1.num (size=10) }}<br>
+            {% for error in form1.num.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form1.submit() }}</p>
+    </form>
+    <h1>Download here after 5 mins</h1>
+    <form action="" method="post">
+        {{ form2.hidden_tag() }}
+        <p>{{ form2.submit() }}</p>
+    </form>
+{% endblock %}

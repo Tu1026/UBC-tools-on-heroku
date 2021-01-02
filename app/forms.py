@@ -43,3 +43,6 @@ class ScraperForm(FlaskForm):
     class_name = StringField('Access Token of your canvas (check help for more)', validators=[DataRequired()])
     num = StringField('Course Id', validators=[DataRequired()])
     submit = SubmitField('Start Scraping')
+
+class DownloadForm(FlaskForm):
+    submit = SubmitField('Start Downloading')

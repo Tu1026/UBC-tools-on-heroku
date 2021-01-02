@@ -7,7 +7,7 @@ from flask_login import logout_user
 from flask_login import login_required
 from flask import request
 from werkzeug.urls import url_parse
-from app.forms import RegistrationForm, CourseForm, GymForm, ScraperForm
+from app.forms import RegistrationForm, CourseForm, GymForm, ScraperForm, DownloadForm
 from app import db, q
 from updateScript import main_function
 from gymUpdates import update_loop
@@ -16,6 +16,7 @@ import discord
 from dotenv import load_dotenv
 from pathlib import Path
 import shutil
+import os
 
 @app.route('/')
 @app.route('/index')
@@ -88,12 +89,18 @@ def gym():
 @app.route('/scraper', methods=['GET', 'POST'])
 @login_required
 def scraper():
-    form = ScraperForm()
-    if form.validate_on_submit():
-        extraction(form.class_name.data, form.num.data)
-        flash('Congratulations content downloading!')
-        dir_name = Path('/scraper')
-        shutil.make_archive('extraction', 'zip', dir_name)
-        send_file('/extraction.zip', as_attachment=True)
+    scraper_form = ScraperForm()
+    download_form = DownloadForm()
+    if scraper_form.validate_on_submit():
+        shutil.rmtree(Path('app/scraper'))
+        os.mkdir('app/scraper')
+        extraction(scraper_form.class_name.data, scraper_form.num.data)
+        flash('Downloading and preparing your files hit the download button 5 minutes later')
+        # dir_name = Path('/scraper')
         return redirect(url_for('index'))
-    return render_template('scraper.html', title='scraper', form=form)
+    if download_form.validate_on_submit():
+        flash('Downloaded')
+        shutil.make_archive('extraction', 'zip', Path('/app'), 'scraper')
+        shutil.move('%s.%s'%('extraction', 'zip'), Path('app'))
+        return send_file('extraction.zip', as_attachment=True)
+    return render_template('scraper.html', title='scraper', form1=scraper_form, form2=download_form)
