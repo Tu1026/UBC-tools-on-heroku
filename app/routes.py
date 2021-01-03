@@ -100,7 +100,7 @@ def scraper():
         # shutil.rmtree(os.path.join(Config.basedir,'tmp'))
         # os.mkdir(os.path.join(Config.basedir,'tmp'))
         # q.enqueue(extraction, scraper_form.class_name.data, scraper_form.num.data, s3)
-        extraction(scraper_form.class_name.data, scraper_form.num.data, s3, current_user.email)
+        q.enqueue(extraction, scraper_form.class_name.data, scraper_form.num.data, s3, current_user.email)
         # shutil.make_archive('extraction', 'zip', 'tmp')
         # upload_file(s3, 'extraction.zip')
         flash('Downloading and preparing your files hit the download button 5 minutes later')
