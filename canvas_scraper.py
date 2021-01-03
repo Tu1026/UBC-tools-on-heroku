@@ -10,14 +10,28 @@ from canvasapi.module import Module, ModuleItem
 from pathlib import Path
 from config import  Config
 from aws import temp_upload
+from dotenv import load_dotenv
+import boto3
 
 def extract_files(text):
     text_search = re.findall("/files/(\\d+)", text, re.IGNORECASE)
     groups = set(text_search)
     return groups
 
+def get_client():
+    load_dotenv()
+    AWSUSER_SECRET = os.environ.get('AWSUSER_SECRET')
+    AWSUSER_ID = os.environ.get('AWSUSER_ID')
+    AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
+    return boto3.client('s3',
+                    'us-west-1',
+                    aws_access_key_id= AWSUSER_ID,
+                    aws_secret_access_key= AWSUSER_SECRET
+                     )
 
-def extraction(token, num, s3, email):
+
+def extraction(token, num, email):
+    s3 = get_client()
     MYDIR = os.path.dirname(__file__)
     url1 = "https://canvas.ubc.ca/"
     output1 = Path("scraper/")
