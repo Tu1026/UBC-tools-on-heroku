@@ -95,7 +95,6 @@ def gym():
 def scraper():
     scraper_form = ScraperForm()
     download_form = DownloadForm()
-    s3 = get_client()
     if scraper_form.validate_on_submit():
         # shutil.rmtree(os.path.join(Config.basedir,'tmp'))
         # os.mkdir(os.path.join(Config.basedir,'tmp'))
@@ -105,9 +104,11 @@ def scraper():
         # upload_file(s3, 'extraction.zip')
         flash('Downloading and preparing your files hit the download button 5 minutes later')
         # dir_name = Path('/scraper')
-        shutil.rmtree(os.path.join(Config.basedir, current_user.email))
+        
         return redirect(url_for('index'))
     if download_form.validate_on_submit():
+        s3 = get_client()
+        shutil.rmtree(os.path.join(Config.basedir, current_user.email))
         total_bytes = get_total_bytes(s3)
         flash('Downloaded')
         # shutil.make_archive('extraction', 'zip', Path('/app'), 'scraper')
