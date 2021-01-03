@@ -9,6 +9,7 @@ from canvasapi.file import File
 from canvasapi.module import Module, ModuleItem
 from pathlib import Path
 from config import  Config
+from aws import temp_upload
 
 def extract_files(text):
     text_search = re.findall("/files/(\\d+)", text, re.IGNORECASE)
@@ -16,13 +17,15 @@ def extract_files(text):
     return groups
 
 
-def extraction(token, num):
+def extraction(token, num, s3, email):
     MYDIR = os.path.dirname(__file__)
     url1 = "https://canvas.ubc.ca/"
     output1 = Path("scraper/")
     num_of_courses = 1
     # output = os.path.join(MYDIR + "/" + 'app/scraper')
-    output = os.path.join(Config.basedir + "/" + 'tmp')
+    # output = os.path.join(Config.basedir + "/" + email)
+    output = email
+
     
     canvas = Canvas(url1, token)
     course = canvas.get_course(int(num))
@@ -56,11 +59,13 @@ def extraction(token, num):
                 if item_type == "File":
                     file = canvas.get_file(item.content_id)
                     files_downloaded.add(item.content_id)
-                    file.download(path + sanitize_filename(file.filename))
+                    temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                    # file.download(path + sanitize_filename(file.filename))
                 elif item_type == "Page":
                     page = course.get_page(item.page_url)
                     with open(path + sanitize_filename(item.title) + ".html", "w", encoding="utf-8") as f:
                         f.write(page.body or "")
+                        temp_upload(s3, path + sanitize_filename(item.title) + ".html", path + sanitize_filename(item.title) + ".html",)                  
                     files = extract_files(page.body or "")
                     for file_id in files:
                         if file_id in files_downloaded:
@@ -68,7 +73,8 @@ def extraction(token, num):
                         try:
                             file = course.get_file(file_id)
                             files_downloaded.add(file_id)
-                            file.download(path + sanitize_filename(file.filename))
+                            # file.download(path + sanitize_filename(file.filename))
+                            temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
                         except ResourceDoesNotExist:
                             pass
                 elif item_type == "ExternalUrl":
@@ -76,10 +82,12 @@ def extraction(token, num):
                     with open(path + sanitize_filename(item.title) + ".url", "w") as f:
                         f.write("[InternetShortcut]\n")
                         f.write("URL=" + url)
+                        temp_upload(s3, path + sanitize_filename(item.title) + ".url", path + sanitize_filename(item.title) + ".url",)                  
                 elif item_type == "Assignment":
                     assignment = course.get_assignment(item.content_id)
                     with open(path + sanitize_filename(item.title) + ".html", "w", encoding="utf-8") as f:
                         f.write(assignment.description or "")
+                        temp_upload(s3, path + sanitize_filename(item.title) + ".html", path + sanitize_filename(item.title) + ".html",)                  
                     files = extract_files(assignment.description or "")
                     for file_id in files:
                         if file_id in files_downloaded:
@@ -87,7 +95,8 @@ def extraction(token, num):
                         try:
                             file = course.get_file(file_id)
                             files_downloaded.add(file_id)
-                            file.download(path + sanitize_filename(file.filename))
+                            # file.download(path + sanitize_filename(file.filename))
+                            temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
                         except ResourceDoesNotExist:
                             pass
 
@@ -99,6 +108,7 @@ def extraction(token, num):
                     print(f"{course.name} - {file.filename}")
                     path = f"{output}/{sanitize_filename(course.name)}/" \
                         f"{sanitize_filename(file.filename)}"
-                    file.download(path)
+                    # file.download(path)
+                    temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
         except Unauthorized:
             pass

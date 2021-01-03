@@ -74,3 +74,10 @@ def get_object_range(s3, total_bytes):
         offset = end + 1 if not isinstance(end, str) else None
         yield s3.get_object(Bucket= os.environ.get('AWS_BUCKET_NAME'), Key='extraction.zip', Range=byte_range)['Body'].read()
 
+
+def temp_upload(s3, file, name):
+    load_dotenv()
+    s3.put_object(Body=file,
+                      Bucket=os.environ.get('AWS_BUCKET_NAME'),
+                      Key= name,
+                      ContentType='text/plain')
