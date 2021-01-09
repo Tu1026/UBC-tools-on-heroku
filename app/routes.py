@@ -96,15 +96,14 @@ def scraper():
     scraper_form = ScraperForm()
     download_form = DownloadForm()
     if scraper_form.validate_on_submit():
-        # shutil.rmtree(os.path.join(Config.basedir,'tmp'))
-        # os.mkdir(os.path.join(Config.basedir,'tmp'))
-        # q.enqueue(extraction, scraper_form.class_name.data, scraper_form.num.data, s3)
-        q.enqueue(extraction, scraper_form.class_name.data, scraper_form.num.data, current_user.email)
+        shutil.rmtree(os.path.join(Config.basedir,'tmp'))
+        os.mkdir(os.path.join(Config.basedir,'tmp'))
+        # q.enqueue(extraction, scraper_form.class_name.data, scraper_form.num.data, current_user.email)
+        extraction(scraper_form.class_name.data, scraper_form.num.data, current_user.email)
         # shutil.make_archive('extraction', 'zip', 'tmp')
         # upload_file(s3, 'extraction.zip')
         flash('Downloading and preparing your files hit the download button 5 minutes later')
         # dir_name = Path('/scraper')
-        
         return redirect(url_for('index'))
     if download_form.validate_on_submit():
         s3 = get_client()

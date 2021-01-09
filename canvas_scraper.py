@@ -12,6 +12,7 @@ from config import  Config
 from aws import temp_upload
 from dotenv import load_dotenv
 import boto3
+from mega import Mega
 
 def extract_files(text):
     text_search = re.findall("/files/(\\d+)", text, re.IGNORECASE)
@@ -31,7 +32,9 @@ def get_client():
 
 
 def extraction(token, num, email):
-    s3 = get_client()
+    # s3 = get_client()
+    mega = Mega()
+    m = mega.login(os.environ.get('MEGA_EMAIL'), os.environ.get('MEGA_PASSWORD'))
     MYDIR = os.path.dirname(__file__)
     url1 = "https://canvas.ubc.ca/"
     output1 = Path("scraper/")
@@ -39,8 +42,10 @@ def extraction(token, num, email):
     # output = os.path.join(MYDIR + "/" + 'app/scraper')
     # output = os.path.join(Config.basedir + "/" + email)
     output = email
+    if not m.find(email):
+        m.create_folder(email)
+    m_folder = m.find(email)
 
-    
     canvas = Canvas(url1, token)
     course = canvas.get_course(int(num))
     courses = []
@@ -73,13 +78,16 @@ def extraction(token, num, email):
                 if item_type == "File":
                     file = canvas.get_file(item.content_id)
                     files_downloaded.add(item.content_id)
-                    temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
-                    # file.download(path + sanitize_filename(file.filename))
+                    # temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                    file.download(path + sanitize_filename(file.filename))
+                    m.upload(path + sanitize_filename(file.filename), m_folder[0])
+                    os.remove(path + sanitize_filename(file.filename))
                 elif item_type == "Page":
                     page = course.get_page(item.page_url)
                     with open(path + sanitize_filename(item.title) + ".html", "w", encoding="utf-8") as f:
                         f.write(page.body or "")
-                        temp_upload(s3, path + sanitize_filename(item.title) + ".html", path + sanitize_filename(item.title) + ".html",)                  
+                        # temp_upload(s3, path + sanitize_filename(item.title) + ".html", path + sanitize_filename(item.title) + ".html",)
+                        m.upload(path + sanitize_filename(item.title) + ".html", m_folder[0])    
                     files = extract_files(page.body or "")
                     for file_id in files:
                         if file_id in files_downloaded:
@@ -87,8 +95,10 @@ def extraction(token, num, email):
                         try:
                             file = course.get_file(file_id)
                             files_downloaded.add(file_id)
-                            # file.download(path + sanitize_filename(file.filename))
-                            temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                            file.download(path + sanitize_filename(file.filename))
+                            # temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                            m.upload(path + sanitize_filename(file.filename), m_folder[0])
+                            os.remove(path + sanitize_filename(file.filename))
                         except ResourceDoesNotExist:
                             pass
                 elif item_type == "ExternalUrl":
@@ -96,12 +106,14 @@ def extraction(token, num, email):
                     with open(path + sanitize_filename(item.title) + ".url", "w") as f:
                         f.write("[InternetShortcut]\n")
                         f.write("URL=" + url)
-                        temp_upload(s3, path + sanitize_filename(item.title) + ".url", path + sanitize_filename(item.title) + ".url",)                  
+                        # temp_upload(s3, path + sanitize_filename(item.title) + ".url", path + sanitize_filename(item.title) + ".url",)
+                        m.upload(path + sanitize_filename(item.title) + ".url", m_folder[0])
                 elif item_type == "Assignment":
                     assignment = course.get_assignment(item.content_id)
                     with open(path + sanitize_filename(item.title) + ".html", "w", encoding="utf-8") as f:
                         f.write(assignment.description or "")
-                        temp_upload(s3, path + sanitize_filename(item.title) + ".html", path + sanitize_filename(item.title) + ".html",)                  
+                        # temp_upload(s3, path + sanitize_filename(item.title) + ".html", path + sanitize_filename(item.title) + ".html",)
+                        m.upload(path + sanitize_filename(item.title) + ".html", m_folder[0])            
                     files = extract_files(assignment.description or "")
                     for file_id in files:
                         if file_id in files_downloaded:
@@ -109,8 +121,10 @@ def extraction(token, num, email):
                         try:
                             file = course.get_file(file_id)
                             files_downloaded.add(file_id)
-                            # file.download(path + sanitize_filename(file.filename))
-                            temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                            file.download(path + sanitize_filename(file.filename))
+                            # temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                            m.upload(path + sanitize_filename(file.filename), m_folder[0])
+                            os.remove(path + sanitize_filename(file.filename))
                         except ResourceDoesNotExist:
                             pass
 
@@ -122,7 +136,9 @@ def extraction(token, num, email):
                     print(f"{course.name} - {file.filename}")
                     path = f"{output}/{sanitize_filename(course.name)}/" \
                         f"{sanitize_filename(file.filename)}"
-                    # file.download(path)
-                    temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                    file.download(path)
+                    # temp_upload(s3, file.get_contents(binary=True), (path + sanitize_filename(file.filename)))
+                    m.upload(path + sanitize_filename(file.filename), m_folder[0])
+                    os.remove(path + sanitize_filename(file.filename))
         except Unauthorized:
             pass
