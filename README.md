@@ -1,6 +1,7 @@
 # Course-update-for-Heroku
 
 This is a website that I designed using Flask to work both locally as well as able to be deployed on heroku. The website has many useful features such as redis workers for background tasks, a database attached to it to store information, connected to AWS's S3 storage service, and many more.
+
 The website allows users to create their own profiles and store their password safely in the database with encryption. From there the user can enter some basic information to track tailored updates on other websites and receive notification via both email and a discord bot. The user also has an option to automate the scraping of contents on "canvas" a platform used by the university to deliver course cotent.
 
 ## Getting Started
