@@ -6,8 +6,11 @@ The website allows users to create their own profiles and store their password s
 ## Getting Started
 
 pip install the requirements.txt
+
 set Flask_App = server.py
+
 *Set up tokens for emails, discord bot, s3 bots
+
 Flask Run
 
 ### Prerequisites
