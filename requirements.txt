@@ -55,7 +55,7 @@ pickleshare==0.7.5
 prompt-toolkit==3.0.10
 psycopg2-binary==2.8.6
 pycryptodome==3.9.9
-Pygments==2.7.3
+Pygments==2.7.4
 pylint==2.6.0
 PyQRCode==1.2.1
 python-dateutil==2.8.1
